@@ -15,16 +15,36 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Account.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="App\main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HTTP\src\Server.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HTTP\src\IAccountManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Others\Tables.sql" />
+    <None Include="Frontend\index.html" />
+    <None Include="Frontend\css\styles.css" />
+    <None Include="Frontend\js\index.js" />
+    <None Include="Frontend\profile.html" />
+    <None Include="Frontend\js\profile.js" />
+    <None Include="Frontend\js\common.js" />
+    <None Include="Frontend\login.html" />
+    <None Include="Frontend\js\login.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="HTTP\include\Server.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HTTP\include\IAccountManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Infrastructure\include\common.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

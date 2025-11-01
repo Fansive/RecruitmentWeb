@@ -106,7 +106,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Third-Party\mysql-connector-c++-9.5.0-winx64\include;$(SolutionDir)Third-Party\cpp-httplib;$(SolutionDir)Third-Party\nlohmann;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Third-Party\mysql-connector-c++-9.5.0-winx64\include;$(SolutionDir)Third-Party\cpp-httplib;$(SolutionDir)Third-Party\nlohmann;$(SolutionDir)HTTP\include;$(SolutionDir)Infrastructure\include;$(SolutionDir)Service\include;$(SolutionDir)Persistent\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,13 +130,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Account.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="App\main.cpp" />
+    <ClCompile Include="HTTP\src\IAccountManager.cpp" />
+    <ClCompile Include="HTTP\src\Server.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Frontend\css\styles.css" />
+    <None Include="Frontend\index.html" />
+    <None Include="Frontend\js\common.js" />
+    <None Include="Frontend\js\index.js" />
+    <None Include="Frontend\js\login.js" />
+    <None Include="Frontend\login.html" />
+    <None Include="Frontend\js\profile.js" />
+    <None Include="Frontend\profile.html" />
     <None Include="Others\Tables.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="HTTP\include\IAccountManager.h" />
+    <ClInclude Include="HTTP\include\Server.h" />
+    <ClInclude Include="Infrastructure\include\common.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

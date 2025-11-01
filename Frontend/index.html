@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>招聘网站首页</title>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+    <!-- 职位展示 -->
+    <main id="jobList"></main>
+
+    <!-- 弹出详细信息 -->
+    <div class="modal" id="jobModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="jobTitle"></h2>
+            <p id="jobCompany"></p>
+            <p id="jobDesc"></p>
+            <button onclick="applyJob()">投递简历</button>
+        </div>
+    </div>
+
+    <script src="js/common.js"></script>
+    <script src="js/index.js"></script>
+</body>
+</html>

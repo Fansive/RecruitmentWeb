@@ -1,0 +1,291 @@
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f5f6fa;
+}
+
+/* 顶部导航栏 */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 40px;
+    background-color: #2d89ef;
+    color: white;
+}
+
+    header .logo {
+        font-size: 22px;
+        font-weight: bold;
+        cursor: pointer;
+        text-decoration: none;
+        color: white;
+    }
+
+    header .search-box {
+        flex: 1;
+        max-width: 500px;
+        margin: 0 40px;
+        display: flex;
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+        header .search-box input {
+            flex: 1;
+            border: none;
+            padding: 10px 16px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        header .search-box button {
+            background: #0078d7;
+            border: none;
+            color: white;
+            padding: 10px 16px;
+            cursor: pointer;
+        }
+
+    header .menu {
+        display: flex;
+        gap: 20px;
+    }
+
+        header .menu button {
+            background: transparent;
+            border: 1px solid white;
+            border-radius: 20px;
+            color: white;
+            padding: 6px 14px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+            header .menu button:hover {
+                background: white;
+                color: #2d89ef;
+            }
+
+/* 职位卡片区 */
+main {
+    padding: 30px 80px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 30px;
+}
+  
+
+.job-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    transition: transform 0.2s;
+    cursor: pointer;
+}
+
+    .job-card:hover {
+        transform: translateY(-3px);
+    }
+
+    .job-card h3 {
+        margin: 0;
+        font-size: 18px;
+        color: #333;
+    }
+
+    .job-card p {
+        margin: 6px 0;
+        color: #555;
+        font-size: 14px;
+    }
+
+/* 弹出框 */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    width: 400px;
+    max-width: 90%;
+}
+
+    .modal-content h2 {
+        margin-top: 0;
+    }
+
+    .modal-content button {
+        background: #0078d7;
+        color: white;
+        border: none;
+        padding: 10px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+        .modal-content button:hover {
+            background: #005fa3;
+        }
+
+.close {
+    float: right;
+    cursor: pointer;
+    font-size: 20px;
+    color: #888;
+}
+
+    .close:hover {
+        color: black;
+    }
+
+
+/* "我的"页面样式 */
+.profile-container {
+    padding: 40px 60px;
+    background: #f5f6fa;
+    min-height: calc(100vh - 80px);
+}
+
+    .profile-container h2 {
+        margin-bottom: 20px;
+        color: #2d89ef;
+    }
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 500px;
+    background: white;
+    padding: 20px 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+    .profile-form label {
+        display: flex;
+        flex-direction: column;
+        font-size: 14px;
+        color: #444;
+    }
+
+    .profile-form input,
+    .profile-form select {
+        margin-top: 4px;
+        padding: 8px 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+
+        .profile-form input[type="file"] {
+            border: none;
+        }
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+    .buttons button {
+        background: #0078d7;
+        border: none;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+        .buttons button:hover {
+            background: #005fa3;
+        }
+
+
+
+/* 登录页面样式 */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 80px);
+    padding: 20px;
+    background: #f5f6fa;
+}
+
+    .login-container h2 {
+        color: #2d89ef;
+        margin-bottom: 20px;
+    }
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 300px;
+    background: white;
+    padding: 30px 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+    .login-form label {
+        display: flex;
+        flex-direction: column;
+        font-size: 14px;
+        color: #444;
+    }
+
+    .login-form input,
+    .login-form select {
+        margin-top: 4px;
+        padding: 8px 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+
+    .login-form button {
+        background: #0078d7;
+        border: none;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 15px;
+        margin-top: 10px;
+        transition: 0.2s;
+    }
+
+        .login-form button:hover {
+            background: #005fa3;
+        }
+
+.switch-register {
+    font-size: 13px;
+    text-align: right;
+    margin-top: 8px;
+}
+
+    .switch-register a {
+        color: #2d89ef;
+        text-decoration: none;
+    }
+
+        .switch-register a:hover {
+            text-decoration: underline;
+        }
