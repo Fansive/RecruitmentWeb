@@ -14,10 +14,11 @@
 //	ss << file.rdbuf(); // read entire file into stringstream
 //	return ss.str();
 //}
+
  
 int main() {
-	std::cout << HttpHandler::GetURL();
-	HttpHandler::Instance().RegisterRoutingAndRun();
+	std::cout << HttpHandler::GetURL() << std::endl;
+	HttpHandler::Instance.RegisterRoutingAndRun();
 	return 0;
 }
 

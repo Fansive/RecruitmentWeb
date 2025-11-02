@@ -1,31 +1,30 @@
 /*Author: xzy*/
 #pragma once
 #include <httplib.h>
+#include <IService.h>
+#include <IFileLoader.h>
+#include <memory>
 
 class HttpHandler final {
 public:
-	constexpr static auto IP = "0.0.0.0";
+	constexpr static auto IP = "127.0.0.1";
 	constexpr static auto Port = 8081;
 	static std::string GetURL() {
-		std::string str = "http://";
-		str += IP;
-		str += ":";
-		str += std::to_string(Port);
-		str += "\n";
-		return str;
+		return std::string("http://").append(IP).append(":").append(std::to_string(Port));
 	}
-	static HttpHandler& Instance() {
-		static HttpHandler instance;
-		return instance;
-	}
+	static HttpHandler Instance;
 	void RegisterRoutingAndRun();
 
 private:
 	httplib::Server server;
-	void RegisterAccountManagementRouting();
-	void RegisterPageRouting();
+	std::unique_ptr<IService> service;
+	std::unique_ptr<IFileLoader> fileLoader;
 
-	HttpHandler() = default;
+	HttpHandler(std::unique_ptr<IService>&& serviceImpl,
+		 std::unique_ptr<IFileLoader>&& fileLoaderImpl
+	) 
+		: service(std::move(serviceImpl)), fileLoader(std::move(fileLoaderImpl)) {
+	}
 	~HttpHandler() {
 		server.stop();
 	}
@@ -33,5 +32,8 @@ private:
 	HttpHandler operator=(const HttpHandler&) = delete;
 	HttpHandler(HttpHandler&&) = delete;
 	HttpHandler operator=(HttpHandler&&) = delete;
-};
 
+	static httplib::Server::HandlerResponse PreRoutingHandler(const httplib::Request&, httplib::Response&);
+	static void LoginHandler(const httplib::Request& request, httplib::Response& response);
+	static void SignupHandler(const httplib::Request& request, httplib::Response& response);
+};

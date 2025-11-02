@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -131,8 +131,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App\main.cpp" />
-    <ClCompile Include="HTTP\src\IAccountManager.cpp" />
+    <ClCompile Include="HTTP\src\AccountController.cpp" />
+    <ClCompile Include="HTTP\src\PreRouting.cpp" />
     <ClCompile Include="HTTP\src\Server.cpp" />
+    <ClCompile Include="Infrastructure\src\SimpleFileLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Frontend\css\styles.css" />
@@ -146,9 +148,11 @@
     <None Include="Others\Tables.sql" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="HTTP\include\IAccountManager.h" />
+    <ClInclude Include="HTTP\include\IService.h" />
+    <ClInclude Include="HTTP\include\IFileLoader.h" />
     <ClInclude Include="HTTP\include\Server.h" />
-    <ClInclude Include="Infrastructure\include\common.h" />
+    <ClInclude Include="Infrastructure\include\Common.h" />
+    <ClInclude Include="Infrastructure\include\SimpleFileLoader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
