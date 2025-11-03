@@ -13,7 +13,7 @@
 //	std::ostringstream ss;
 //	ss << file.rdbuf(); // read entire file into stringstream
 //	return ss.str();
-// }
+//}
 
 #include <DbConnector.h>
 #include <SimpleFileLoader.h>
@@ -22,7 +22,10 @@ SimpleFileLoader g_FileLoader;
 
 int main()
 {
-	std::cout << HttpHandler::GetURL();
-	HttpHandler::Instance().RegisterRoutingAndRun();
+	DbConnector::Instance.Connect("tcp://127.0.0.1:3306", "root",
+								  g_FileLoader.LoadText("Others/local_password.txt"), "recruitment_web");
+
+	std::cout << HttpHandler::GetURL() << std::endl;
+	HttpHandler::Instance.RegisterRoutingAndRun();
 	return 0;
 }

@@ -1,29 +1,26 @@
-#ifndef I_COMPANY_SERVICE_H
-#define I_COMPANY_SERVICE_H
+#pragma once
 
 #include "IUserService.h"
 #include "DomainModels.h"
+#include <map>
+#include <memory>
 
-// 招聘方业务逻辑服务接口 (操作主体为 Company)
+using string = std::string;
+
 class ICompanyService : public IUserService
 {
 public:
     virtual ~ICompanyService() = default;
 
-    // 编辑或初始化公司信息
-    virtual bool editCompanyProfile(const std::string &companyId, const Company &company) = 0;
+    // 公司信息管理
+    virtual bool EditCompanyProfile(const string &companyId, const Company &company) = 0;
+    virtual std::unique_ptr<Company> GetCompanyProfile(const string &companyId) = 0;
 
-    // 发布新岗位
-    virtual bool postNewJob(const std::string &companyId, const JobPosting &job) = 0;
+    // 岗位发布与管理
+    virtual bool PostNewJob(const string &companyId, const JobPosting &job) = 0;
+    virtual bool EditJob(const string &jobId, const JobPosting &job) = 0;
 
-    // 编辑已发布的岗位
-    virtual bool editJob(const std::string &jobId, const JobPosting &job) = 0;
-
-    // 查看某个岗位的所有投递者简历列表 (ApplicationRecord 和 JobHunter 的组合信息)
-    virtual std::map<ApplicationRecord, JobHunter> viewApplicationsForJob(const std::string &jobId) = 0;
-
-    // 做出录用决定，newStatus 应该是 "Accepted" 或 "Rejected"
-    virtual bool makeHiringDecision(const std::string &applicationId, const std::string &newStatus) = 0;
+    // 申请管理
+    virtual std::map<ApplicationRecord, JobHunter> ViewApplicationsForJob(const string &jobId) = 0;
+    virtual bool MakeHiringDecision(const string &applicationId, const string &newStatus) = 0;
 };
-
-#endif // I_COMPANY_SERVICE_H

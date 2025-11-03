@@ -1,159 +1,130 @@
 #include "IJobHunterService.h"
 #include "MockPersistentLayer.h"
 #include <iostream>
-#include <algorithm> // for std::find_if
-#include <sstream>   // for UUID simulation
+#include <sstream>
+#include <random>
 
-// 模拟 UUID 生成
-std::string generateUUID()
+// 模拟 Session ID 生成
+static string GenerateSessionId()
 {
-    static int counter = 1000;
-    std::stringstream ss;
-    ss << "app-" << ++counter;
-    return ss.str();
+    return "SID_" + std::to_string(std::time(nullptr));
 }
 
-/**
- * 具体的求职者服务实现类
- */
-class JobHunterServiceImpl : public IJobHunterService
+class JobHunterService : public IJobHunterService
 {
 private:
-    IMockPersistentLayer *persistentLayer;
-
-    // 模拟密码哈希函数
-    std::string hashPassword(const std::string &password) const
-    {
-        return "hashed_" + password;
-    }
+    IMockPersistentLayer *_db;
 
 public:
-    // 通过构造函数进行依赖注入，保持低耦合
-    JobHunterServiceImpl(IMockPersistentLayer *dbLayer) : persistentLayer(dbLayer) {}
+    JobHunterService(IMockPersistentLayer *db) : _db(db) {}
 
-    // --- IUserService 继承方法实现 ---
-
-    bool registerUser(const std::string &email, const std::string &password, const std::string &roleType) override
+    // IUserService Implementation (Job Hunter specific)
+    RetType Signup(const string &id, const string &password, const string &role) override
     {
-        if (roleType != "JobHunter")
-            return false;
+        if (role != "JobHunter")
+            return RetType::ServerError;
 
-        JobHunter newUser;
-        newUser.userId = generateUUID();
-        newUser.email = email;
-        newUser.passwordHash = hashPassword(password);
-        newUser.role = roleType;
+        if (_db->GetUserByEmail(id))
+            return RetType::Signup_Existed;
 
-        // 业务逻辑: 检查邮箱是否已存在
-        // 模拟调用 Persistent Layer
-        if (persistentLayer->getUserByEmail(email).has_value())
+        JobHunter newHunter;
+        newHunter.userId = "JH_" + std::to_string(std::time(nullptr));
+        newHunter.email = id;
+        newHunter.passwordHash = password; // 简化：实际应使用哈希
+        newHunter.role = role;
+        newHunter.name = "New Hunter";
+
+        if (_db->AddJobHunter(newHunter))
         {
-            return false;
+            return RetType::Success;
         }
-
-        return persistentLayer->saveNewUser(newUser);
+        return RetType::ServerError;
     }
 
-    UserBase *login(const std::string &email, const std::string &password) override
+    RetType Login(const string &id, const string &password, string &sessionId) override
     {
-        auto userOpt = persistentLayer->getUserByEmail(email);
-        if (!userOpt.has_value())
-            return nullptr;
-
-        UserBase &user = userOpt.value();
-        // 业务逻辑: 验证密码
-        if (user.passwordHash == hashPassword(password))
+        auto userBase = _db->GetUserByEmail(id);
+        if (!userBase || userBase->passwordHash != password)
         {
-            // 返回一个堆上的对象副本，调用者负责释放
-            if (user.role == "JobHunter")
+            return RetType::Login_Unmatch;
+        }
+        if (userBase->role != "JobHunter")
+        {
+            return RetType::Login_Unmatch; // 权限不匹配
+        }
+
+        sessionId = GenerateSessionId();
+        // 实际：应将 sessionId 存入缓存或数据库
+        return RetType::Success;
+    }
+
+    bool Logout(const string &sessionId) override
+    {
+        // 实际：应从缓存或数据库移除 sessionId
+        return true;
+    }
+
+    std::unique_ptr<UserBase> GetUserBaseProfile(const string &userId) override
+    {
+        // 获取用户的基础信息，不包含专业 JobHunter 字段
+        return _db->GetUserById(userId);
+    }
+
+    // IJobHunterService Implementation
+    bool EditProfile(const string &userId, const JobHunter &profile) override
+    {
+        auto existingProfile = _db->GetJobHunterProfile(userId);
+        if (!existingProfile)
+            return false;
+
+        JobHunter updatedProfile = profile;
+
+        // 确保身份和安全字段不被修改 (保留原有值)
+        updatedProfile.userId = existingProfile->userId;
+        updatedProfile.email = existingProfile->email;
+        updatedProfile.passwordHash = existingProfile->passwordHash;
+        updatedProfile.role = existingProfile->role;
+
+        return _db->UpdateJobHunter(updatedProfile);
+    }
+
+    std::unique_ptr<JobHunter> GetJobHunterProfile(const string &userId) override
+    {
+        return _db->GetJobHunterProfile(userId);
+    }
+
+    std::vector<JobPosting> BrowseAllJobs() override
+    {
+        return _db->GetAllJobPostings();
+    }
+
+    std::optional<string> ApplyToJob(const string &jobHunterId, const string &jobId) override
+    {
+        // 业务逻辑：检查是否重复投递
+        auto applications = _db->GetApplicationsByHunterId(jobHunterId);
+        for (const auto &app : applications)
+        {
+            if (app.jobId == jobId)
             {
-                return new JobHunter(persistentLayer->getJobHunterById(user.userId).value_or(JobHunter()));
+                return std::nullopt; // 已投递
             }
         }
-        return nullptr;
+
+        ApplicationRecord newRecord;
+        newRecord.applicationId = "APP_" + std::to_string(std::time(nullptr));
+        newRecord.jobHunterId = jobHunterId;
+        newRecord.jobId = jobId;
+        newRecord.status = "Pending";
+
+        if (_db->SaveApplicationRecord(newRecord))
+        {
+            return newRecord.applicationId;
+        }
+        return std::nullopt;
     }
 
-    bool changePassword(const std::string &userId, const std::string &newPassword) override
+    std::vector<ApplicationRecord> ViewMyApplications(const string &jobHunterId) override
     {
-        // 业务逻辑: 校验新密码复杂度（此处跳过）
-        std::string newHash = hashPassword(newPassword);
-        return persistentLayer->updatePassword(userId, newHash);
-    }
-
-    JobHunter *getJobHunterProfile(const std::string &userId) override
-    {
-        auto profileOpt = persistentLayer->getJobHunterById(userId);
-        if (!profileOpt.has_value())
-            return nullptr;
-
-        // 返回一个堆上的对象副本
-        return new JobHunter(profileOpt.value());
-    }
-
-    Company *getCompanyProfile(const std::string &userId) override
-    {
-        // 求职者服务不处理获取公司信息，但必须实现
-        return nullptr;
-    }
-
-    // --- IJobHunterService 核心方法实现 ---
-
-    bool editProfile(const std::string &userId, const JobHunter &profile) override
-    {
-        // 业务逻辑: 校验用户ID与Profile ID一致性
-        if (userId != profile.userId)
-            return false;
-
-        // 模拟调用 Persistent Layer 更新 Profile
-        return persistentLayer->updateJobHunterProfile(profile);
-    }
-
-    std::vector<JobPosting> browseJobs(const std::string &keywords, const std::string &location) override
-    {
-        // 业务逻辑: 可以加入过滤/排序逻辑（此处跳过）
-        return persistentLayer->findJobs(keywords, location);
-    }
-
-    bool applyForJob(const std::string &jobHunterId, const std::string &jobId) override
-    {
-        // 业务逻辑: 1. 检查岗位是否存在; 2. 检查用户是否已投递过
-        // 假设检查通过
-
-        ApplicationRecord record;
-        record.applicationId = generateUUID();
-        record.jobHunterId = jobHunterId;
-        record.jobId = jobId;
-        record.status = "Pending";
-
-        return persistentLayer->saveApplication(record);
-    }
-
-    std::vector<ApplicationRecord> viewMyApplications(const std::string &jobHunterId) override
-    {
-        return persistentLayer->findApplicationsByJobHunter(jobHunterId);
-    }
-
-    bool respondToOffer(const std::string &applicationId, bool accept) override
-    {
-        std::string newStatus = accept ? "Accepted" : "Rejected";
-        // 业务逻辑: 校验ApplicationID状态是否为 Reviewed
-        // 假设校验通过
-        return persistentLayer->updateApplicationStatus(applicationId, newStatus);
+        return _db->GetApplicationsByHunterId(jobHunterId);
     }
 };
-
-// Mock Persistent Layer 的简单实现（用于编译，Service层不关心其内部）
-bool PersistentLayerImpl::saveNewUser(const UserBase &user) { return true; }
-std::optional<UserBase> PersistentLayerImpl::getUserByEmail(const std::string &email) { return std::nullopt; }
-bool PersistentLayerImpl::updatePassword(const std::string &userId, const std::string &newHash) { return true; }
-std::optional<JobHunter> PersistentLayerImpl::getJobHunterById(const std::string &userId) { return JobHunter{}; }
-bool PersistentLayerImpl::updateJobHunterProfile(const JobHunter &profile) { return true; }
-std::optional<Company> PersistentLayerImpl::getCompanyById(const std::string &userId) { return Company{}; }
-bool PersistentLayerImpl::updateCompanyProfile(const Company &profile) { return true; }
-std::vector<JobPosting> PersistentLayerImpl::findJobs(const std::string &keywords, const std::string &location) { return {}; }
-bool PersistentLayerImpl::saveJobPosting(const JobPosting &post) { return true; }
-bool PersistentLayerImpl::updateJobPosting(const JobPosting &post) { return true; }
-bool PersistentLayerImpl::saveApplication(const ApplicationRecord &record) { return true; }
-std::vector<ApplicationRecord> PersistentLayerImpl::findApplicationsByJobHunter(const std::string &jobHunterId) { return {}; }
-std::map<ApplicationRecord, JobHunter> PersistentLayerImpl::findApplicationsByJobId(const std::string &jobId) { return {}; }
-bool PersistentLayerImpl::updateApplicationStatus(const std::string &applicationId, const std::string &newStatus) { return true; }

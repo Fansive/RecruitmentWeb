@@ -1,5 +1,4 @@
-#ifndef DOMAIN_MODELS_H
-#define DOMAIN_MODELS_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -9,22 +8,22 @@
 class UserBase
 {
 public:
-    std::string userId; // 用户ID
-    std::string email;  // 邮箱
+    std::string userId;
+    std::string email;
     std::string passwordHash;
-    std::string role; // 角色标识
+    std::string role;    // JobHunter, Company, Administrator
+    std::string name;    // 统一的名称
+    std::string address; // 统一的地址信息
 
     virtual ~UserBase() = default;
 };
 
-// Job Hunter Profile
+// Job Hunter Class
 class JobHunter : public UserBase
 {
 public:
-    std::string name;
     std::string gender;
     std::string phoneNumber;
-    std::string currentAddress;
     std::string degree;
     int graduationYear;
     std::string school;
@@ -32,14 +31,12 @@ public:
     std::string resumeUrl; // 简历文件URL
 };
 
-// Company Profile (acts as Recruiter)
+// Company Class
 class Company : public UserBase
 {
 public:
-    std::string name;
     std::string type;
     std::string scale;
-    std::string address;
     std::string contactInfo;
     std::string description;
 };
@@ -55,15 +52,15 @@ struct JobPosting
     std::string location;
 };
 
-// Application Record (M:N Relationship)
+// Application Record
 struct ApplicationRecord
 {
     std::string applicationId;
     std::string jobHunterId;
     std::string jobId;
-
-    // Status: Pending, Reviewed, Accepted, Rejected
     std::string status;
 };
 
-#endif // DOMAIN_MODELS_H
+class Administrator : public UserBase
+{
+};
