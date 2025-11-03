@@ -15,8 +15,16 @@
 //	return ss.str();
 //}
 
- 
+#include <DbConnector.h> 
+#include <SimpleFileLoader.h>
+#include <Logger.h>
+SimpleFileLoader g_FileLoader;
+
+
 int main() {
+	DbConnector::Instance.Connect("tcp://127.0.0.1:3306", "root",
+		g_FileLoader.LoadText("Others/local_password.txt"), "recruitment_web");
+
 	std::cout << HttpHandler::GetURL() << std::endl;
 	HttpHandler::Instance.RegisterRoutingAndRun();
 	return 0;

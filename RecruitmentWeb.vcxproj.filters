@@ -30,6 +30,12 @@
     <ClCompile Include="HTTP\src\PreRouting.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Persistent\src\DbConnector.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Infrastructure\src\Logger.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Others\Tables.sql" />
@@ -56,6 +62,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Infrastructure\include\SimpleFileLoader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Persistent\include\DbConnector.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Infrastructure\include\Logger.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

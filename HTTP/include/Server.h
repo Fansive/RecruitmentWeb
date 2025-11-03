@@ -18,12 +18,8 @@ public:
 private:
 	httplib::Server server;
 	std::unique_ptr<IService> service;
-	std::unique_ptr<IFileLoader> fileLoader;
 
-	HttpHandler(std::unique_ptr<IService>&& serviceImpl,
-		 std::unique_ptr<IFileLoader>&& fileLoaderImpl
-	) 
-		: service(std::move(serviceImpl)), fileLoader(std::move(fileLoaderImpl)) {
+	HttpHandler(std::unique_ptr<IService>&& serviceImpl) : service(std::move(serviceImpl)){
 	}
 	~HttpHandler() {
 		server.stop();

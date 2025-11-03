@@ -24,8 +24,7 @@ namespace {
 
 	};
 }
-HttpHandler HttpHandler::Instance(std::unique_ptr<IService>(new MockService),
-	std::unique_ptr<IFileLoader>(new SimpleFileLoader));
+HttpHandler HttpHandler::Instance(std::unique_ptr<IService>(new MockService));
 
 void HttpHandler::RegisterRoutingAndRun() {
 	server.set_mount_point("/", "./Frontend");
