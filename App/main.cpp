@@ -16,6 +16,7 @@
 //}
  
 int main() {
+
 	std::cout << HttpHandler::GetURL();
 	HttpHandler::Instance().RegisterRoutingAndRun();
 	return 0;

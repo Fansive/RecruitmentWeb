@@ -5,7 +5,7 @@ using httplib::Response;
 
 void HttpHandler::RegisterPageRouting() {
 	server.Get("/", [](const Request&, Response& res) {
-		res.set_content(ReadFile("index.html"), "text/html");
+		res.set_content(ReadFile("index.html"),"text/html");
 	});
 }
 
