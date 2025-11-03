@@ -10,19 +10,29 @@ function showRegister() {
     document.getElementById('loginForm').style.display = 'flex';
   }
   
-  function login() {
+  async function login() {
     const form = document.getElementById('loginForm');
     const role = form.role.value;
-    const username = form.username.value.trim();
+    const id = form.username.value.trim();
     const password = form.password.value.trim();
   
-    if (!username || !password) {
+    if (!id || !password) {
       alert('请填写账号和密码');
       return;
     }
   
-    console.log('登录信息:', { role, username, password });
-    alert(`模拟登录成功！身份：${role}，账号：${username}`);
+    console.log('登录信息:', { role, id, password });
+
+    const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ id, password })
+    });
+
+    const data = await response.json();
+    console.log(data);
   
     // 登录成功后跳转示例
     if (role === 'jobSeeker') window.location.href = 'index.html';

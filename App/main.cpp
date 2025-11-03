@@ -1,24 +1,28 @@
 #include <Server.h>
 
-//namespace Config {
+// namespace Config {
 //	constexpr auto Password_Path = "Others/local_password.txt";
 //	constexpr auto Server_URL = "http://localhost:8081";
-//}
-//std::string LoadPassword() {
+// }
+// std::string LoadPassword() {
 //	std::ifstream file(Config::Password_Path);
 //	if (!file.is_open()) {
-//		std::cout << Config::Password_Path << "´ò¿ªÊ§°Ü" << std::endl;
+//		std::cout << Config::Password_Path << "ï¿½ï¿½Ê§ï¿½ï¿½" << std::endl;
 //		exit(0);
 //	}
 //	std::ostringstream ss;
 //	ss << file.rdbuf(); // read entire file into stringstream
 //	return ss.str();
-//}
- 
-int main() {
+// }
 
+#include <DbConnector.h>
+#include <SimpleFileLoader.h>
+#include <Logger.h>
+SimpleFileLoader g_FileLoader;
+
+int main()
+{
 	std::cout << HttpHandler::GetURL();
 	HttpHandler::Instance().RegisterRoutingAndRun();
 	return 0;
 }
-
