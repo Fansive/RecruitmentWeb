@@ -9,8 +9,9 @@ class UserBase
 {
 public:
     std::string userId;
-    std::string email;
     std::string passwordHash;
+
+    std::string email;
     std::string role;    // JobHunter, Company, Administrator
     std::string name;    // 统一的名称
     std::string address; // 统一的地址信息

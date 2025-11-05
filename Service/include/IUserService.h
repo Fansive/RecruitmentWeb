@@ -26,6 +26,6 @@ public:
 
     // 基础操作
     virtual bool Logout(const string &sessionId) = 0;
-    virtual bool ChangePassword(const string &userId, const string &oldPassword, const string &newPassword) = 0;
+    // virtual bool ChangePassword(const string &userId, const string &oldPassword, const string &newPassword) = 0;
     virtual std::unique_ptr<UserBase> GetUserBaseProfile(const string &userId) = 0;
 };

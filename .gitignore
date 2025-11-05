@@ -1,4 +1,5 @@
 .vs/
+.vscode/
 RecruitmentWeb/
 x64/Debug/*
 !x64/Debug/mysqlcppconn-10-vs14.dll

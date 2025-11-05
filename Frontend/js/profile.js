@@ -13,7 +13,7 @@ function saveProfile() {
 }
 
 function goBack() {
-    history.back();
+    goTo('index');
 }
 
 // function goTo(page) {
