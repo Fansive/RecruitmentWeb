@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>发布新岗位 - 招聘网</title>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+
+    <!-- 发布新职位页面 -->
+    <main class="job-publish-container">
+        <h2>发布新岗位</h2>
+
+        <form id="addJobForm" class="job-publish-form">
+            <label>职位名称 <input type="text" name="jobTitle" required></label>
+            <label>
+                职位类型
+                <select name="jobType" required>
+                    <option value="全职">全职</option>
+                    <option value="兼职">兼职</option>
+                    <option value="实习">实习</option>
+                </select>
+            </label>
+            <label>薪资范围 <input type="text" name="salary" placeholder="例如：8k-15k" required></label>
+            <label>工作地点 <input type="text" name="location" required></label>
+            <label>
+                职位描述
+                <textarea name="description" placeholder="请详细描述职位职责和工作内容" required></textarea>
+            </label>
+            <label>
+                职位要求
+                <textarea name="requirements" placeholder="请列出职位要求和任职资格" required></textarea>
+            </label>
+            <div class="buttons">
+                <button type="button" onclick="publishJob()">发布岗位</button>
+                <button type="button" onclick="goBack()">取消</button>
+            </div>
+        </form>
+    </main>
+
+    <script src="js/common.js"></script>
+    <script src="js/companyData.js"></script>
+    <script src="js/jobPublish.js"></script>
+</body>
+
+</html>

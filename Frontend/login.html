@@ -1,70 +1,73 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>登录 / 注册 - 招聘网</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
 
-<main class="login-container">
-  <!-- 登录表单 -->
-  <form id="loginForm" class="login-form">
-    <h2>登录</h2>
-    <label>
-      身份
-      <select name="role" required>
-        <option value="jobSeeker">求职者</option>
-        <option value="recruiter">招聘方</option>
-        <option value="admin">管理员</option>
-      </select>
-    </label>
-    <label>
-      账号
-      <input type="text" name="username" placeholder="请输入账号" required>
-    </label>
-    <label>
-      密码
-      <input type="password" name="password" placeholder="请输入密码" required>
-    </label>
-    <button type="button" onclick="login()">登录</button>
-    <p class="switch-register">
-      没有账号？<a href="#" onclick="showRegister()">注册</a>
-    </p>
-  </form>
+  <main class="login-container">
+    <!-- 登录表单 -->
+    <form id="loginForm" class="login-form">
+      <h2>登录</h2>
+      <label>
+        身份
+        <select name="role" required>
+          <option value="jobSeeker">求职者</option>
+          <option value="company">招聘方</option>
+          <option value="admin">管理员</option>
+        </select>
+      </label>
+      <label>
+        账号
+        <input type="text" name="username" placeholder="请输入账号" required>
+      </label>
+      <label>
+        密码
+        <input type="password" name="password" placeholder="请输入密码" required>
+      </label>
+      <button type="button" onclick="login()">登录</button>
+      <p class="switch-register">
+        没有账号？<a href="#" onclick="showRegister()">注册</a>
+      </p>
+    </form>
 
-  <!-- 注册表单（默认隐藏） -->
-  <form id="registerForm" class="login-form" style="display:none;">
-    <h2>注册</h2>
-    <label>
-      身份
-      <select name="role" required>
-        <option value="jobSeeker">求职者</option>
-        <option value="recruiter">招聘方</option>
-        <option value="admin">管理员</option>
-      </select>
-    </label>
-    <label>
-      账号
-      <input type="text" name="username" placeholder="请输入账号" required>
-    </label>
-    <label>
-      密码
-      <input type="password" name="password" placeholder="请输入密码" required>
-    </label>
-    <label>
-      确认密码
-      <input type="password" name="confirmPassword" placeholder="再次输入密码" required>
-    </label>
-    <button type="button" onclick="register()">注册</button>
-    <p class="switch-register">
-      已有账号？<a href="#" onclick="showLogin()">返回登录</a>
-    </p>
-  </form>
-</main>
+    <!-- 注册表单（默认隐藏） -->
+    <form id="registerForm" class="login-form" style="display:none;">
+      <h2>注册</h2>
+      <label>
+        身份
+        <select name="role" required>
+          <option value="jobSeeker">求职者</option>
+          <option value="company">招聘方</option>
+          <option value="admin">管理员</option>
+        </select>
+      </label>
+      <label>
+        账号
+        <input type="text" name="username" placeholder="请输入账号" required>
+      </label>
+      <label>
+        密码
+        <input type="password" name="password" placeholder="请输入密码" required>
+      </label>
+      <label>
+        确认密码
+        <input type="password" name="confirmPassword" placeholder="再次输入密码" required>
+      </label>
+      <button type="button" onclick="register()">注册</button>
+      <p class="switch-register">
+        已有账号？<a href="#" onclick="showLogin()">返回登录</a>
+      </p>
+    </form>
+  </main>
 
-<script src="js/common.js"></script>
-<script src="js/login.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/login.js"></script>
 </body>
+
 </html>

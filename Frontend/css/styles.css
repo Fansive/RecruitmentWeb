@@ -14,60 +14,60 @@ header {
     color: white;
 }
 
-    header .logo {
-        font-size: 22px;
-        font-weight: bold;
-        cursor: pointer;
-        text-decoration: none;
-        color: white;
-    }
+header .logo {
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+}
 
-    header .search-box {
-        flex: 1;
-        max-width: 500px;
-        margin: 0 40px;
-        display: flex;
-        background: white;
-        border-radius: 20px;
-        overflow: hidden;
-    }
+header .search-box {
+    flex: 1;
+    max-width: 500px;
+    margin: 0 40px;
+    display: flex;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+}
 
-        header .search-box input {
-            flex: 1;
-            border: none;
-            padding: 10px 16px;
-            font-size: 14px;
-            outline: none;
-        }
+header .search-box input {
+    flex: 1;
+    border: none;
+    padding: 10px 16px;
+    font-size: 14px;
+    outline: none;
+}
 
-        header .search-box button {
-            background: #0078d7;
-            border: none;
-            color: white;
-            padding: 10px 16px;
-            cursor: pointer;
-        }
+header .search-box button {
+    background: #0078d7;
+    border: none;
+    color: white;
+    padding: 10px 16px;
+    cursor: pointer;
+}
 
-    header .menu {
-        display: flex;
-        gap: 20px;
-    }
+header .menu {
+    display: flex;
+    gap: 20px;
+}
 
-        header .menu button {
-            background: transparent;
-            border: 1px solid white;
-            border-radius: 20px;
-            color: white;
-            padding: 6px 14px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: 0.2s;
-        }
+header .menu button {
+    background: transparent;
+    border: 1px solid white;
+    border-radius: 20px;
+    color: white;
+    padding: 6px 14px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+}
 
-            header .menu button:hover {
-                background: white;
-                color: #2d89ef;
-            }
+header .menu button:hover {
+    background: white;
+    color: #2d89ef;
+}
 
 /* 职位卡片区 */
 main {
@@ -76,7 +76,7 @@ main {
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
     gap: 30px;
 }
-  
+
 
 .job-card {
     background: white;
@@ -87,21 +87,21 @@ main {
     cursor: pointer;
 }
 
-    .job-card:hover {
-        transform: translateY(-3px);
-    }
+.job-card:hover {
+    transform: translateY(-3px);
+}
 
-    .job-card h3 {
-        margin: 0;
-        font-size: 18px;
-        color: #333;
-    }
+.job-card h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
 
-    .job-card p {
-        margin: 6px 0;
-        color: #555;
-        font-size: 14px;
-    }
+.job-card p {
+    margin: 6px 0;
+    color: #555;
+    font-size: 14px;
+}
 
 /* 弹出框 */
 .modal {
@@ -121,23 +121,23 @@ main {
     max-width: 90%;
 }
 
-    .modal-content h2 {
-        margin-top: 0;
-    }
+.modal-content h2 {
+    margin-top: 0;
+}
 
-    .modal-content button {
-        background: #0078d7;
-        color: white;
-        border: none;
-        padding: 10px 16px;
-        border-radius: 8px;
-        cursor: pointer;
-        margin-top: 10px;
-    }
+.modal-content button {
+    background: #0078d7;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+}
 
-        .modal-content button:hover {
-            background: #005fa3;
-        }
+.modal-content button:hover {
+    background: #005fa3;
+}
 
 .close {
     float: right;
@@ -146,9 +146,9 @@ main {
     color: #888;
 }
 
-    .close:hover {
-        color: black;
-    }
+.close:hover {
+    color: black;
+}
 
 
 /* "我的"页面样式 */
@@ -158,10 +158,10 @@ main {
     min-height: calc(100vh - 80px);
 }
 
-    .profile-container h2 {
-        margin-bottom: 20px;
-        color: #2d89ef;
-    }
+.profile-container h2 {
+    margin-bottom: 20px;
+    color: #2d89ef;
+}
 
 .profile-form {
     display: flex;
@@ -171,28 +171,28 @@ main {
     background: white;
     padding: 20px 30px;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-    .profile-form label {
-        display: flex;
-        flex-direction: column;
-        font-size: 14px;
-        color: #444;
-    }
+.profile-form label {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    color: #444;
+}
 
-    .profile-form input,
-    .profile-form select {
-        margin-top: 4px;
-        padding: 8px 10px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-size: 14px;
-    }
+.profile-form input,
+.profile-form select {
+    margin-top: 4px;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
 
-        .profile-form input[type="file"] {
-            border: none;
-        }
+.profile-form input[type="file"] {
+    border: none;
+}
 
 .buttons {
     display: flex;
@@ -200,19 +200,19 @@ main {
     margin-top: 20px;
 }
 
-    .buttons button {
-        background: #0078d7;
-        border: none;
-        color: white;
-        padding: 10px 16px;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: 0.2s;
-    }
+.buttons button {
+    background: #0078d7;
+    border: none;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+}
 
-        .buttons button:hover {
-            background: #005fa3;
-        }
+.buttons button:hover {
+    background: #005fa3;
+}
 
 
 
@@ -227,10 +227,10 @@ main {
     background: #f5f6fa;
 }
 
-    .login-container h2 {
-        color: #2d89ef;
-        margin-bottom: 20px;
-    }
+.login-container h2 {
+    color: #2d89ef;
+    margin-bottom: 20px;
+}
 
 .login-form {
     display: flex;
@@ -240,40 +240,40 @@ main {
     background: white;
     padding: 30px 25px;
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-    .login-form label {
-        display: flex;
-        flex-direction: column;
-        font-size: 14px;
-        color: #444;
-    }
+.login-form label {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    color: #444;
+}
 
-    .login-form input,
-    .login-form select {
-        margin-top: 4px;
-        padding: 8px 10px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-size: 14px;
-    }
+.login-form input,
+.login-form select {
+    margin-top: 4px;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
 
-    .login-form button {
-        background: #0078d7;
-        border: none;
-        color: white;
-        padding: 10px 16px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 15px;
-        margin-top: 10px;
-        transition: 0.2s;
-    }
+.login-form button {
+    background: #0078d7;
+    border: none;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    margin-top: 10px;
+    transition: 0.2s;
+}
 
-        .login-form button:hover {
-            background: #005fa3;
-        }
+.login-form button:hover {
+    background: #005fa3;
+}
 
 .switch-register {
     font-size: 13px;
@@ -281,11 +281,507 @@ main {
     margin-top: 8px;
 }
 
-    .switch-register a {
-        color: #2d89ef;
-        text-decoration: none;
+.switch-register a {
+    color: #2d89ef;
+    text-decoration: none;
+}
+
+.switch-register a:hover {
+    text-decoration: underline;
+}
+
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .profile-form .buttons {
+        flex-direction: column;
     }
 
-        .switch-register a:hover {
-            text-decoration: underline;
-        }
+    .profile-form .buttons button {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+}
+
+
+/* 公司信息页面样式 */
+.company-info-container {
+    padding: 40px 60px;
+    background: #f5f6fa;
+    min-height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.company-info-container h2 {
+    margin-bottom: 20px;
+    color: #2d89ef;
+    text-align: center;
+}
+
+.company-info-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 600px;
+    max-width: 90%;
+    background: white;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.company-info-form label {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    color: #444;
+}
+
+.company-info-form input,
+.company-info-form select,
+.company-info-form textarea {
+    margin-top: 4px;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.company-info-form textarea {
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+}
+
+/* 职位管理页面样式 */
+.job-management-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.job-info {
+    flex: 1;
+}
+
+.job-title {
+    margin: 0 0 10px 0;
+    color: #2d89ef;
+    font-size: 18px;
+}
+
+.job-meta {
+    margin: 5px 0;
+    color: #555;
+}
+
+.job-description,
+.job-requirements {
+    margin: 10px 0;
+    color: #666;
+}
+
+.application-count {
+    margin-left: 20px;
+    color: #666;
+    font-size: 14px;
+}
+
+.count-number {
+    font-size: 16px;
+    font-weight: bold;
+    color: #2d89ef;
+}
+
+.count-label {
+    margin-top: 4px;
+}
+
+.job-actions {
+    margin-top: 15px;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-view-applications {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-edit-job {
+    background: #ffc107;
+    color: #000;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-delete-job {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.no-jobs-message {
+    text-align: center;
+    color: #666;
+    padding: 20px;
+}
+
+
+/* 申请管理样式 */
+.applications-title {
+    color: #2d89ef;
+    margin-bottom: 20px;
+}
+
+.no-applications-message {
+    text-align: center;
+    color: #666;
+    padding: 20px;
+}
+
+.application-item {
+    background: white;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.application-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.applicant-name {
+    font-weight: bold;
+    color: #333;
+}
+
+.application-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-agree {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.btn-reject {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+/* 状态标签样式 */
+.application-status {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-agreed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-rejected {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* 模态框文本域样式 */
+.profile-form textarea {
+    margin-top: 4px;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 60px;
+}
+
+
+
+/* 发布新岗位页面样式 */
+.job-publish-container {
+    padding: 40px 60px;
+    background: #f5f6fa;
+    min-height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.job-publish-container h2 {
+    margin-bottom: 20px;
+    color: #2d89ef;
+    text-align: center;
+}
+
+.job-publish-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 600px;
+    max-width: 90%;
+    background: white;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.job-publish-form label {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    color: #444;
+    font-weight: 500;
+}
+
+.job-publish-form input,
+.job-publish-form select,
+.job-publish-form textarea {
+    margin-top: 6px;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.2s;
+}
+
+.job-publish-form input:focus,
+.job-publish-form select:focus,
+.job-publish-form textarea:focus {
+    border-color: #2d89ef;
+    outline: none;
+}
+
+.job-publish-form textarea {
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+    line-height: 1.5;
+}
+
+.job-publish-form .buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 15px;
+}
+
+.job-publish-form .buttons button {
+    flex: 1;
+    background: #0078d7;
+    border: none;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.job-publish-form .buttons button:hover {
+    background: #005fa3;
+}
+
+.job-publish-form .buttons button[type="button"]:last-child {
+    background: #6c757d;
+}
+
+.job-publish-form .buttons button[type="button"]:last-child:hover {
+    background: #545b62;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .job-publish-container {
+        padding: 20px;
+    }
+
+    .job-publish-form {
+        width: 100%;
+        max-width: 100%;
+        padding: 20px;
+    }
+
+    .job-publish-form .buttons {
+        flex-direction: column;
+    }
+}
+
+/* records*/
+
+/* 投递记录页面样式 */
+.no-records-message {
+    text-align: center;
+    color: #666;
+    padding: 40px 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.no-records-message .hint {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #888;
+}
+
+.application-record-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.2s;
+}
+
+.application-record-card:hover {
+    transform: translateY(-2px);
+}
+
+.record-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.record-info {
+    flex: 1;
+}
+
+.record-info .job-title {
+    margin: 0 0 10px 0;
+    color: #2d89ef;
+    font-size: 18px;
+}
+
+.record-info .company-info,
+.record-info .job-meta,
+.record-info .apply-time {
+    margin: 5px 0;
+    color: #555;
+    font-size: 14px;
+}
+
+.status-info {
+    margin-left: 20px;
+}
+
+.record-actions {
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-view-details {
+    background: #0078d7;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-withdraw {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-view-details:hover {
+    background: #005fa3;
+}
+
+.btn-withdraw:hover {
+    background: #545b62;
+}
+
+/* 投递状态样式 */
+.application-status {
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status-submitted {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.status-viewed {
+    background: #cce7ff;
+    color: #004085;
+}
+
+.status-interview {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-hired {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-rejected {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.status-withdrawn {
+    background: #e2e3e5;
+    color: #383d41;
+}

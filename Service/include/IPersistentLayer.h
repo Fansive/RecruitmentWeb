@@ -9,10 +9,10 @@
 
 using string = std::string;
 
-class IMockPersistentLayer
+class IPersistentLayer
 {
 public:
-    virtual ~IMockPersistentLayer() = default;
+    virtual ~IPersistentLayer() = default;
 
     // 通用用户操作
     virtual std::unique_ptr<UserBase> GetUserById(const string &userId) = 0;
