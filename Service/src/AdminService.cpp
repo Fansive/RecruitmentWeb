@@ -1,5 +1,5 @@
 #include "IAdminService.h"
-#include "MockPersistentLayer.h"
+#include "IPersistentLayer.h"
 #include <iostream>
 
 // 模拟 Session ID 生成
@@ -11,10 +11,10 @@ static string GenerateSessionId()
 class AdminService : public IAdminService
 {
 private:
-    IMockPersistentLayer *_db;
+    IPersistentLayer *_db;
 
 public:
-    AdminService(IMockPersistentLayer *db) : _db(db) {}
+    AdminService(IPersistentLayer *db) : _db(db) {}
 
     // IUserService Implementation (Admin specific)
     RetType Signup(const string &id, const string &password, const string &role) override

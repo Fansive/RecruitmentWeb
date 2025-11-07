@@ -1,5 +1,5 @@
 #include "IJobHunterService.h"
-#include "MockPersistentLayer.h"
+#include "IPersistentLayer.h"
 #include <iostream>
 #include <sstream>
 #include <random>
@@ -13,10 +13,10 @@ static string GenerateSessionId()
 class JobHunterService : public IJobHunterService
 {
 private:
-    IMockPersistentLayer *_db;
+    IPersistentLayer *_db;
 
 public:
-    JobHunterService(IMockPersistentLayer *db) : _db(db) {}
+    JobHunterService(IPersistentLayer *db) : _db(db) {}
 
     // IUserService Implementation (Job Hunter specific)
     RetType Signup(const string &id, const string &password, const string &role) override
