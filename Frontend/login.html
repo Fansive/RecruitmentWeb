@@ -1,73 +1,141 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>登录 / 注册 - 招聘网</title>
-  <link rel="stylesheet" href="css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录/注册 - 招聘网站</title>
+    <link rel="stylesheet" href="css/common.css">
 </head>
-
 <body>
+    <div id="navbar-placeholder"></div>
 
-  <main class="login-container">
-    <!-- 登录表单 -->
-    <form id="loginForm" class="login-form">
-      <h2>登录</h2>
-      <label>
-        身份
-        <select name="role" required>
-          <option value="jobSeeker">求职者</option>
-          <option value="company">招聘方</option>
-          <option value="admin">管理员</option>
-        </select>
-      </label>
-      <label>
-        账号
-        <input type="text" name="username" placeholder="请输入账号" required>
-      </label>
-      <label>
-        密码
-        <input type="password" name="password" placeholder="请输入密码" required>
-      </label>
-      <button type="button" onclick="login()">登录</button>
-      <p class="switch-register">
-        没有账号？<a href="#" onclick="showRegister()">注册</a>
-      </p>
-    </form>
+    <div class="container">
+        <div class="auth-container">
+            <div class="card">
+                <div class="auth-tabs">
+                    <button class="auth-tab active" onclick="switchTab('login')">登录</button>
+                    <button class="auth-tab" onclick="switchTab('register')">注册</button>
+                </div>
 
-    <!-- 注册表单（默认隐藏） -->
-    <form id="registerForm" class="login-form" style="display:none;">
-      <h2>注册</h2>
-      <label>
-        身份
-        <select name="role" required>
-          <option value="jobSeeker">求职者</option>
-          <option value="company">招聘方</option>
-          <option value="admin">管理员</option>
-        </select>
-      </label>
-      <label>
-        账号
-        <input type="text" name="username" placeholder="请输入账号" required>
-      </label>
-      <label>
-        密码
-        <input type="password" name="password" placeholder="请输入密码" required>
-      </label>
-      <label>
-        确认密码
-        <input type="password" name="confirmPassword" placeholder="再次输入密码" required>
-      </label>
-      <button type="button" onclick="register()">注册</button>
-      <p class="switch-register">
-        已有账号？<a href="#" onclick="showLogin()">返回登录</a>
-      </p>
-    </form>
-  </main>
+                <!-- 登录表单 -->
+                <form id="loginForm" class="auth-form active">
+                    <div class="form-group">
+                        <label>用户类型</label>
+                        <select id="loginRole" required>
+                            <option value="">请选择</option>
+                            <option value="jobHunter">求职者</option>
+                            <option value="company">公司</option>
+                            <option value="admin">管理员</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>用户名</label>
+                        <input type="text" id="loginUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label>密码</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">登录</button>
+                </form>
 
-  <script src="js/common.js"></script>
-  <script src="js/login.js"></script>
+                <!-- 注册表单 -->
+                <form id="registerForm" class="auth-form">
+                    <div class="form-group">
+                        <label>用户类型</label>
+                        <select id="registerRole" required>
+                            <option value="">请选择</option>
+                            <option value="jobHunter">求职者</option>
+                            <option value="company">公司</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>用户名</label>
+                        <input type="text" id="registerUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label>密码</label>
+                        <input type="password" id="registerPassword" required minlength="6">
+                    </div>
+                    <div class="alert alert-info" style="margin-top: 1rem; margin-bottom: 1rem;">
+                        <strong>提示：</strong>注册成功后，请登录并在个人信息页面完善详细信息。
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">注册</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/navigation.js"></script>
+    <script>
+        // 切换登录/注册标签
+        function switchTab(tab) {
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+
+            if (tab === 'login') {
+                document.querySelector('.auth-tab').classList.add('active');
+                document.getElementById('loginForm').classList.add('active');
+            } else {
+                document.querySelectorAll('.auth-tab')[1].classList.add('active');
+                document.getElementById('registerForm').classList.add('active');
+            }
+        }
+
+        // 登录表单提交
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const role = document.getElementById('loginRole').value;
+
+            if (!role) {
+                alert('请选择用户类型');
+                return;
+            }
+
+            Api.apiLogin({ userId: username, password, role })
+                .then(user => {
+                    // 登录成功，sessionId 已通过 Set-Cookie 设置
+                    // apiLogin 内部会调用 /api/me 获取用户信息
+                    setCurrentUser(user, role);
+                    alert('登录成功！');
+                    window.location.href = 'index.html';
+                })
+                .catch(err => alert(err.message || '登录失败'));
+        });
+
+        // 注册表单提交
+        document.getElementById('registerForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+            const role = document.getElementById('registerRole').value;
+
+            if (!role) {
+                alert('请选择用户类型');
+                return;
+            }
+
+            Api.apiRegister({ userId: username, password, role })
+                .then(() => {
+                    alert('注册成功！请登录');
+                    switchTab('login');
+                    document.getElementById('loginUsername').value = username;
+                    document.getElementById('loginRole').value = role;
+                })
+                .catch(err => alert(err.message || '注册失败'));
+        });
+
+        // 如果已登录，跳转到首页
+        if (isLoggedIn()) {
+            window.location.href = 'index.html';
+        }
+    </script>
 </body>
-
 </html>
+
+

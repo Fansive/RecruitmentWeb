@@ -1,31 +1,208 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>招聘网站首页</title>
-    <link rel="stylesheet" href="css/styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>招聘网站 - 首页</title>
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+            .hero h1 {
+                font-size: 2.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .hero p {
+                font-size: 1.25rem;
+                opacity: 0.9;
+            }
+
+        .job-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .job-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+            .job-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            }
+
+        .job-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .job-company {
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+
+        .job-info {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .job-salary {
+            color: #ef4444;
+            font-weight: 600;
+        }
+
+        .search-section {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+            .search-form input {
+                flex: 1;
+                min-width: 200px;
+            }
+    </style>
 </head>
-
 <body>
-    <!-- 职位展示 -->
-    <main id="jobList"></main>
+    <div id="navbar-placeholder"></div>
 
-    <!-- 弹出详细信息 -->
-    <div class="modal" id="jobModal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2 id="jobTitle"></h2>
-            <p id="jobCompany"></p>
-            <p id="jobDesc"></p>
-            <button onclick="applyJob()">投递简历</button>
+    <div class="hero">
+        <h1>欢迎来到招聘网站</h1>
+        <p>找到理想的工作，或招聘优秀的人才</p>
+    </div>
+
+    <div class="container">
+        <div class="search-section">
+            <form class="search-form" id="searchForm">
+                <input type="text" id="keyword" placeholder="搜索职位、公司..." class="form-group input">
+                <input type="text" id="location" placeholder="工作地点" class="form-group input">
+                <button type="submit" class="btn btn-primary">搜索</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">热门职位</h2>
+            <div class="job-list" id="jobList">
+                <!-- 职位列表将通过JS动态加载 -->
+            </div>
         </div>
     </div>
 
-    <script src="js/common.js"></script>
-    <script src="js/index.js"></script>
-    <script src="js/records.js"></script>
-</body>
+    <script src="js/api.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/navigation.js"></script>
+    <script>
+        // 职位数据
+        let jobsCache = [];
 
+        // 从后端加载职位数据
+        async function loadJobs(params = {}) {
+            try {
+                const data = await Api.apiListJobs(params);
+                jobsCache = Array.isArray(data) ? data : (data?.items || []);
+                renderJobs(jobsCache);
+            } catch (e) {
+                showAlert(e.message || '获取职位失败', 'error');
+                renderJobs([]);
+            }
+        }
+
+        // 渲染职位列表
+        function renderJobs(jobs = jobsCache) {
+            const jobList = document.getElementById('jobList');
+            if (jobs.length === 0) {
+                jobList.innerHTML = '<div class="empty-state"><p>暂无职位信息</p></div>';
+                return;
+            }
+
+            jobList.innerHTML = jobs.map(job => `
+                    <div class="job-card" onclick="viewJob('${job.id}')">
+                        <div class="job-title">${job.title}</div>
+                        <div class="job-company">${job.company}</div>
+                        <div>${job.description}</div>
+                        <div class="job-info">
+                            <span>📍 ${job.location}</span>
+                            <span class="job-salary">💰 ${job.salary}</span>
+                        </div>
+                    </div>
+                `).join('');
+        }
+
+        // 查看职位详情（这里可以扩展为详情页）
+        function viewJob(jobId) {
+            const role = getCurrentRole();
+            if (role === USER_ROLES.JOBHUNTER) {
+                // 求职者可以申请职位
+                if (confirm('确定要申请这个职位吗？')) {
+                    applyJob(jobId);
+                }
+            } else {
+                alert('请先登录为求职者身份');
+            }
+        }
+
+        // 申请职位
+        function applyJob(jobId) {
+            const user = getCurrentUser();
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            // jobId 是数据库主键，hunterId 由后端从 sessionId 获取
+            Api.apiApplyJob(jobId)
+                .then(() => alert('申请成功！'))
+                .catch(err => alert(err.message || '申请失败'));
+        }
+
+        // 搜索功能
+        document.getElementById('searchForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const keyword = document.getElementById('keyword').value.toLowerCase();
+            const location = document.getElementById('location').value.toLowerCase();
+
+            const filtered = jobsCache.filter(job => {
+                const matchKeyword = !keyword ||
+                    job.title.toLowerCase().includes(keyword) ||
+                    job.company.toLowerCase().includes(keyword) ||
+                    job.description.toLowerCase().includes(keyword);
+                const matchLocation = !location || job.location.toLowerCase().includes(location);
+                return matchKeyword && matchLocation;
+            });
+
+            renderJobs(filtered);
+        });
+
+        // 页面加载时初始化
+        loadJobs();
+    </script>
+</body>
 </html>
+
+

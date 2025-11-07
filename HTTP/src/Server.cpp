@@ -8,24 +8,92 @@ using string = std::string;
 
 namespace
 {
-	class MockService : public IService
-	{
+	class MockService : public IService {
 	public:
-		RetType Login(const string &id, const string &password, string &sessionId) override
-		{
-			printf("[received login]:id=%s; password=%s\n", id.c_str(), password.c_str());
-			sessionId = "42";
-			return RetType::Success;
+		bool IsSessionExists(const string& sessionId) override {
+			return true;
 		}
-		RetType Signup(const string &id, const string &password, const string &role) override
+
+		StatusDTO Login(const string& userId, const string& password, const string& role, string& sessionId) override
 		{
-			printf("[received signup]:id=%s; password=%s\n", id.c_str(), password.c_str());
-			return RetType::Success;
+			return StatusDTO();
 		}
-		RetType IsSessionExists(const string &sessionId) override
+
+		SignupDTO Signup(const string& userId, const string& password, const string& role, bool&success) override
 		{
-			return RetType::Session_Existed;
+			return SignupDTO();
 		}
+
+		UserInfoDTO GetMe(const string& sessionId) override
+		{
+			return UserInfoDTO();
+		}
+
+		JobHunterDTO GetJobHunterInfo(int id) override
+		{
+			return JobHunterDTO();
+		}
+
+		StatusDTO UpdateHunterInfo(int id, const JobHunter& newInfo) override
+		{
+			return StatusDTO();
+		}
+
+		std::vector<JobApplicationDTO> GetJobApplicationsByJobHunter(int id) override
+		{
+			return std::vector<JobApplicationDTO>();
+		}
+
+		CompanyDTO GetCompanyById(int id) override
+		{
+			return CompanyDTO();
+		}
+
+		StatusDTO UpdateCompanyInfo(int id, const Company& newInfo) override
+		{
+			return StatusDTO();
+		}
+
+		std::vector<JobDTO> SearchJobs(const string& keyword, const string& location) override
+		{
+			return std::vector<JobDTO>();
+		}
+
+		int CreateJob(const JobInfo& newJob) override
+		{
+			return 0;
+		}
+
+		JobApplicationDTO ApplyForJob(int id) override
+		{
+			return JobApplicationDTO();
+		}
+
+		std::vector<JobApplicationDTO> GetJobApplicationsByCompany(int id) override
+		{
+			return std::vector<JobApplicationDTO>();
+		}
+
+		StatusDTO UpdateJobApplicationStatus(int id) override
+		{
+			return StatusDTO();
+		}
+
+		std::vector<Company> GetPendingCompaniesEdits() override
+		{
+			return std::vector<Company>();
+		}
+
+		std::vector<JobInfo> GetPendingJobsEdits() override
+		{
+			return std::vector<JobInfo>();
+		}
+
+		StatusDTO CheckPending(const string& type, bool isApproved) override
+		{
+			return StatusDTO();
+		}
+
 	};
 }
 HttpHandler HttpHandler::Instance(std::unique_ptr<IService>(new MockService));

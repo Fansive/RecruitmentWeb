@@ -36,21 +36,15 @@ public:
 class Company : public UserBase
 {
 public:
-    std::string type;
-    std::string scale;
-    std::string contactInfo;
-    std::string description;
+    int id;
+    std::string email, address, companyType, scale, contactInfo, description;
 };
 
 // Job Posting
-struct JobPosting
+struct JobInfo
 {
-    std::string jobId;
-    std::string companyId;
-    std::string title;
-    std::string description;
-    std::string requirements;
-    std::string location;
+    int id;
+    std::string title, companyName, location, salary, description, degreeRequirement;
 };
 
 // Application Record

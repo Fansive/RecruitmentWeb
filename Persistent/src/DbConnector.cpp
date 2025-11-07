@@ -11,7 +11,7 @@ bool DbConnector::Connect(const string& host, const string& userName, const stri
         driver = get_driver_instance();
         connection.reset(driver->connect(host, userName, password));
         connection->setSchema(database);
-        Execute(database);
+        Execute("use " + database);
         return true;
     }
     catch (const sql::SQLException& e) {

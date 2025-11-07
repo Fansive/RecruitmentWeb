@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>岗位申请记录 - 招聘网站</title>
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+
+    <div class="container">
+        <div class="card">
+            <h2 class="card-title">岗位申请记录</h2>
+            <div id="applicationsList">
+                <!-- 申请记录将通过JS动态加载 -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/navigation.js"></script>
+    <script>
+        // 检查权限
+        if (!checkAuth(USER_ROLES.COMPANY)) {
+            // checkAuth会处理跳转
+        }
+
+        // 加载申请记录
+        async function loadApplications() {
+            const user = getCurrentUser();
+            if (!user) return;
+            try {
+                const list = await Api.apiGetCompanyApplications(user.id);
+                // 期望每条包含: { id, job:{title}, hunter:{name,phone,email}, appliedAt, status }
+                const apps = Array.isArray(list) ? list : (list?.items || []);
+                renderApplications(apps);
+            } catch (e) {
+                showAlert(e.message || '加载失败', 'error');
+                renderApplications([]);
+            }
+        }
+
+        // 渲染申请记录
+        function renderApplications(applications) {
+            const list = document.getElementById('applicationsList');
+            
+            if (applications.length === 0) {
+                list.innerHTML = '<div class="empty-state"><p>暂无申请记录</p></div>';
+                return;
+            }
+
+            list.innerHTML = `
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>职位名称</th>
+                            <th>求职者</th>
+                            <th>联系方式</th>
+                            <th>申请时间</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${applications.map(app => `
+                            <tr>
+                                <td>${app.job ? app.job.title : '职位已删除'}</td>
+                                <td>${app.candidate ? (app.candidate.name || app.candidate.username) : app.candidateName}</td>
+                                <td>
+                                    ${app.candidate ? (app.candidate.phone || app.candidate.email || '-') : '-'}
+                                </td>
+                                <td>${formatDate(app.appliedAt)}</td>
+                                <td>
+                                    <span class="badge badge-${getStatusClass(app.status)}">
+                                        ${getStatusText(app.status)}
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-success" onclick="updateStatus('${app.id}', 'company accepted')" style="padding: 0.25rem 0.75rem; font-size: 0.875rem; margin-right: 0.5rem;">通过</button>
+                                    <button class="btn btn-danger" onclick="updateStatus('${app.id}', 'company rejected')" style="padding: 0.25rem 0.75rem; font-size: 0.875rem;">拒绝</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        // 更新申请状态
+        function updateStatus(applicationId, status) {
+            Api.apiUpdateApplicationStatus(applicationId, status)
+                .then(() => { showAlert('状态已更新', 'success'); loadApplications(); })
+                .catch(err => showAlert(err.message || '更新失败', 'error'));
+        }
+
+        // 获取状态文本
+        function getStatusText(status) {
+            const statusMap = {
+                'pending': '待处理',
+                'reviewing': '审核中',
+                'accepted': '已通过',
+                'rejected': '已拒绝'
+            };
+            return statusMap[status] || status;
+        }
+
+        // 获取状态样式类
+        function getStatusClass(status) {
+            const classMap = {
+                'pending': 'pending',
+                'reviewing': 'pending',
+                'accepted': 'approved',
+                'rejected': 'rejected'
+            };
+            return classMap[status] || 'pending';
+        }
+
+        // 页面加载时初始化
+        loadApplications();
+    </script>
+</body>
+</html>
+
+

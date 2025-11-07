@@ -131,7 +131,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App\main.cpp" />
-    <ClCompile Include="HTTP\src\AccountController.cpp" />
+    <ClCompile Include="HTTP\src\Controller.cpp" />
     <ClCompile Include="HTTP\src\PreRouting.cpp" />
     <ClCompile Include="HTTP\src\Server.cpp" />
     <ClCompile Include="Infrastructure\src\Logger.cpp" />
@@ -150,6 +150,7 @@
     <None Include="Others\Tables.sql" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="HTTP\include\DTO.h" />
     <ClInclude Include="HTTP\include\IService.h" />
     <ClInclude Include="HTTP\include\IFileLoader.h" />
     <ClInclude Include="HTTP\include\Server.h" />

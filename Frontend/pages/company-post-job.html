@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发布岗位 - 招聘网站</title>
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+
+    <div class="container">
+        <div class="card">
+            <h2 class="card-title">发布新岗位</h2>
+            <form id="jobForm">
+                <div class="form-group">
+                    <label>职位名称 *</label>
+                    <input type="text" id="title" required placeholder="例如：前端开发工程师">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>工作地点 *</label>
+                        <input type="text" id="location" required placeholder="例如：北京">
+                    </div>
+                    <div class="form-group">
+                        <label>薪资范围 *</label>
+                        <input type="text" id="salary" required placeholder="例如：15k-25k">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>学历要求</label>
+                    <select id="education">
+                        <option value="">不限</option>
+                        <option value="highschool">高中</option>
+                        <option value="college">专科</option>
+                        <option value="bachelor">本科</option>
+                        <option value="master">硕士</option>
+                        <option value="doctor">博士</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>职位描述 *</label>
+                    <textarea id="description" rows="6" required placeholder="请详细描述职位要求、工作内容等..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>职位要求</label>
+                    <textarea id="requirements" rows="4" placeholder="请描述具体的技能要求、能力要求等..."></textarea>
+                </div>
+
+                <div class="alert alert-info">
+                    <strong>提示：</strong>发布岗位需要管理员审核，审核通过后才会在首页显示。
+                </div>
+
+                <button type="submit" class="btn btn-primary">提交审核</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">我发布的岗位（待审核）</h2>
+            <div id="pendingJobsList">
+                <!-- 待审核岗位列表 -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/navigation.js"></script>
+    <script>
+        // 检查权限
+        if (!checkAuth(USER_ROLES.COMPANY)) {
+            // checkAuth会处理跳转
+        }
+
+        // 移除“待审核岗位”区域（按表结构直接创建岗位）
+        document.getElementById('pendingJobsList')?.closest('.card')?.remove();
+
+        // 提交岗位
+        document.getElementById('jobForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const user = getCurrentUser();
+            if (!user) {
+                alert('请先登录');
+                window.location.href = '../login.html';
+                return;
+            }
+
+            const jobData = {
+                title: document.getElementById('title').value,
+                location: document.getElementById('location').value,
+                salary: document.getElementById('salary').value,
+                description: document.getElementById('description').value,
+                degreeRequirement: mapDegreeToBack(document.getElementById('education').value) || null
+                // companyId 由后端从 sessionId 获取
+            };
+            Api.apiCreateJob(jobData)
+                .then(() => { showAlert('岗位创建成功', 'success'); document.getElementById('jobForm').reset(); })
+                .catch(err => showAlert(err.message || '创建失败', 'error'));
+        });
+
+        function mapDegreeToBack(edu) {
+            const m = { highschool: 'senior', college: 'junior', bachelor: 'graduate', master: 'postGraduate', doctor: 'doctor' };
+            return m[edu] || null;
+        }
+    </script>
+</body>
+</html>
+
+

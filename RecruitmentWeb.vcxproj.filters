@@ -21,7 +21,7 @@
     <ClCompile Include="HTTP\src\Server.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="HTTP\src\AccountController.cpp">
+    <ClCompile Include="HTTP\src\Controller.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Infrastructure\src\SimpleFileLoader.cpp">
@@ -68,6 +68,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Infrastructure\include\Logger.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HTTP\include\DTO.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公司信息 - 招聘网站</title>
+    <link rel="stylesheet" href="../css/common.css">
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+
+    <div class="container">
+        <div class="card">
+            <h2 class="card-title">公司信息</h2>
+            <form id="companyForm">
+                <div class="form-group">
+                    <label>用户名</label>
+                    <input type="text" id="username" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label>邮箱</label>
+                    <input type="email" id="email">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>公司地址 *</label>
+                        <input type="text" id="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label>联系方式 *</label>
+                        <input type="text" id="contact" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>公司规模</label>
+                    <select id="scale">
+                        <option value="">请选择</option>
+                        <option value="small">1-50人</option>
+                        <option value="medium">51-200人</option>
+                        <option value="large">201-500人</option>
+                        <option value="xlarge">500人以上</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>行业类型</label>
+                    <select id="industry">
+                        <option value="">请选择</option>
+                        <option value="tech">互联网/IT</option>
+                        <option value="finance">金融</option>
+                        <option value="education">教育</option>
+                        <option value="manufacturing">制造业</option>
+                        <option value="service">服务业</option>
+                        <option value="other">其他</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>公司简介</label>
+                    <textarea id="description" rows="6" placeholder="请介绍公司基本情况、发展历程、主营业务等..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary">保存</button>
+            </form>
+        </div>
+
+        <div class="card" id="pendingReviewCard" style="display: none;">
+            <h2 class="card-title">待审核信息</h2>
+            <div id="pendingReviewContent"></div>
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/navigation.js"></script>
+    <script>
+        // 检查权限
+        if (!checkAuth(USER_ROLES.COMPANY)) {
+            // checkAuth会处理跳转
+        }
+
+        // 加载公司信息
+        async function loadCompanyInfo() {
+            const user = getCurrentUser();
+            if (!user) return;
+            try {
+                const detail = await Api.apiGetCompany(user.id);
+                document.getElementById('username').value = detail.userId || user.username || '';
+                document.getElementById('name').value = detail.name || detail.companyName || '';
+                document.getElementById('address').value = detail.address || '';
+                document.getElementById('contact').value = detail.contactInfo || '';
+                document.getElementById('scale').value = detail.scale || '';
+                document.getElementById('industry').value = detail.companyType || '';
+                document.getElementById('description').value = detail.description || '';
+                document.getElementById('benefits').value = detail.benefits || '';
+            } catch (e) { showAlert(e.message || '加载失败', 'error'); }
+        }
+
+        // 移除本地“审核中”占位（改为直接修改）
+        document.getElementById('pendingReviewCard')?.remove();
+
+        // 保存公司信息
+        document.getElementById('companyForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const user = getCurrentUser();
+            if (!user) {
+                alert('请先登录');
+                window.location.href = '../login.html';
+                return;
+            }
+
+            const updatedData = {
+                email: document.getElementById('email')?.value || null,
+                address: document.getElementById('address').value || null,
+                contactInfo: document.getElementById('contact').value || null,
+                scale: document.getElementById('scale').value || null,
+                companyType: document.getElementById('industry').value || null,
+                description: document.getElementById('description').value || null
+            };
+            Api.apiUpdateCompany(user.id, updatedData)
+                .then(() => showAlert('保存成功！', 'success'))
+                .catch(err => showAlert(err.message || '保存失败', 'error'));
+        });
+
+        // 页面加载时初始化
+        loadCompanyInfo();
+    </script>
+</body>
+</html>
+
+

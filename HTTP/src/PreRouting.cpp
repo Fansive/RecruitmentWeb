@@ -39,15 +39,13 @@ Server::HandlerResponse HttpHandler::PreRoutingHandler(const Request& request, R
         return Server::HandlerResponse::Unhandled; //预路由里未处理请求,交由后续路由继续处理
     }
     const string& sessionId = ParseSessionId(request);
-    auto ret = Instance.service->IsSessionExists(sessionId);
-    if (ret == IService::RetType::Session_Existed) {
+    if (Instance.service->IsSessionExists(sessionId)) {
         return Server::HandlerResponse::Unhandled;
     }
-    else if (ret == IService::RetType::Session_Nonexisted) {
+    else {
         response.status = 302;                       
         response.set_header("Location", "/login.html"); //重定向
         response.set_content("Redirecting to login...", "text/plain");
         return Server::HandlerResponse::Handled;
     }
-    else assert(false);
 }
