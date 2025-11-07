@@ -1,49 +1,49 @@
 #pragma once
 #include <string>
-#include <vector>
-#include <DomainModels.h>
-#include <DTO.h>
+#include "DTO.h"
 
-// 持久层接口：定义数据存储/查询的抽象操作
 class IPersistent {
 public:
-    using string = std::string;
     virtual ~IPersistent() = default;
 
-    // -------------------------- 会话相关 --------------------------
-    virtual bool existsSession(const string& sessionId) = 0;
-    virtual void saveSession(const string& sessionId, const string& userId, const string& role) = 0;
-    virtual UserInfoDTO getSessionUser(const string& sessionId) = 0;
 
-    // -------------------------- 用户注册/登录 --------------------------
-    virtual bool existsUser(const string& userId) = 0;
-    virtual SignupDTO saveUser(const string& userId, const string& passwordHash, const string& role) = 0;
-    virtual bool verifyUserPassword(const string& userId, const string& passwordHash) = 0;
-    virtual string getUserRole(const string& userId) = 0;
+    //  创建用户，返回数据库生成的主键 id
+    virtual int CreateUser(const std::string& userId, const std::string& role) = 0;
 
-    // -------------------------- 求职者信息 --------------------------
-    virtual JobHunterDTO getJobHunterById(int id) = 0;
-    virtual JobHunterDTO getJobHunterByUserId(const string& userId) = 0;
-    virtual StatusDTO updateJobHunter(int id, const JobHunter& newInfo) = 0;
+    //  通过 userId 查找主键 id
+    virtual int GetUserIdByUserName(const std::string& userId) = 0;
 
-    // -------------------------- 公司信息 --------------------------
-    virtual CompanyDTO getCompanyById(int id) = 0;
-    virtual CompanyDTO getCompanyByUserId(const string& userId) = 0;
-    virtual StatusDTO updateCompany(int id, const Company& newInfo) = 0;
+    // 通过id获取用户完整DTO信息
+    virtual UserInfoDTO GetUserInfo(const int id) = 0;
 
-    // -------------------------- 职位相关 --------------------------
-    virtual std::vector<JobDTO> searchJobs(const string& keyword, const string& location) = 0;
-    virtual int saveJob(const JobDTO& jobDTO) = 0;
-    virtual JobInfo getJobById(int jobId) = 0;
+    //JobHnter相关
+    virtual JobHunterDTO GetJobHunterInfo(int id) = 0;
+    virtual StatusDTO UpdateHunterInfo(int id, const JobHunter& newInfo) = 0;
+    virtual std::vector<JobApplicationDTO> GetJobApplicationsByJobHunter(int id) = 0;
 
-    // -------------------------- 职位申请相关 --------------------------
-    virtual JobApplicationDTO saveJobApplication(const JobApplicationDTO& application) = 0;
-    virtual std::vector<JobApplicationDTO> getApplicationsByHunterId(int hunterId) = 0;
-    virtual std::vector<JobApplicationDTO> getApplicationsByCompanyId(int companyId) = 0;
-    virtual StatusDTO updateApplicationStatus(int applicationId, const string& newStatus) = 0;
+    //Company相关
+    virtual CompanyDTO GetCompanyById(int id) = 0;
+    virtual StatusDTO UpdateCompanyInfo(int id, const Company& newInfo) = 0;
 
-    // -------------------------- 管理员审核相关 --------------------------
-    virtual std::vector<Company> getPendingCompanyEdits() = 0;
-    virtual std::vector<JobInfo> getPendingJobEdits() = 0;
-    virtual StatusDTO approvePendingEdit(const string& type, int targetId, bool isApproved) = 0;
+    virtual std::vector<JobDTO> GetAllJobs() = 0;
+
+    //创建JobInfo，返回该job的id
+    virtual int CreateJob(const JobInfo& newJob) = 0;
+
+
+    //---JobApplication相关
+    // 
+    //该id为job的id
+    virtual JobApplicationDTO ApplyForJob(int id) = 0;
+    //根据公司id,查询他的岗位申请列表
+    virtual std::vector<JobApplicationDTO> GetJobApplicationsByCompany(int id) = 0;
+
+    //公司同意/拒绝职位申请后,更新招聘进度,该id为jobApplication的id
+    virtual StatusDTO UpdateJobApplicationStatus(int id, const string& status) = 0;
+
+    virtual std::vector<Company> GetPendingCompaniesEdits() = 0;
+    virtual std::vector<JobInfo> GetPendingJobsEdits() = 0;
+
+    virtual StatusDTO CheckPending(const string& type, bool isApproved) = 0;
+
 };

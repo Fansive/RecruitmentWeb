@@ -28,7 +28,7 @@ public:
 	//根据公司id,查询他的岗位申请列表
 	virtual std::vector<JobApplicationDTO> GetJobApplicationsByCompany(int id) = 0;
 	//公司同意/拒绝职位申请后,更新招聘进度,该id为jobApplication的id
-	virtual StatusDTO UpdateJobApplicationStatus(int id) = 0;
+	virtual StatusDTO UpdateJobApplicationStatus(int id,const string &status) = 0;
 	//管理员获取公司修改信息的申请列表
 	virtual std::vector<Company> GetPendingCompaniesEdits() = 0;
 	virtual std::vector<JobInfo> GetPendingJobsEdits() = 0;
