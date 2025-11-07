@@ -137,6 +137,7 @@
     <ClCompile Include="Infrastructure\src\Logger.cpp" />
     <ClCompile Include="Infrastructure\src\SimpleFileLoader.cpp" />
     <ClCompile Include="Persistent\src\DbConnector.cpp" />
+    <ClCompile Include="Service\src\AppService.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Frontend\css\styles.css" />
@@ -158,6 +159,8 @@
     <ClInclude Include="Infrastructure\include\Logger.h" />
     <ClInclude Include="Infrastructure\include\SimpleFileLoader.h" />
     <ClInclude Include="Persistent\include\DbConnector.h" />
+    <ClInclude Include="Service\include\DomainModels.h" />
+    <ClInclude Include="Service\include\IPersistent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

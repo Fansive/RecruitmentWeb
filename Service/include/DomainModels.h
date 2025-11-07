@@ -47,14 +47,7 @@ struct JobInfo
     std::string title, companyName, location, salary, description, degreeRequirement;
 };
 
-// Application Record
-struct ApplicationRecord
-{
-    std::string applicationId;
-    std::string jobHunterId;
-    std::string jobId;
-    std::string status;
-};
+
 
 class Administrator : public UserBase
 {
