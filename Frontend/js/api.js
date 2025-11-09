@@ -71,7 +71,6 @@ async function apiUpdateApplicationStatus(appId, status) {
     return await apiRequest(`/applications/${appId}`, { method: 'PATCH', body: { status } });
 }
 
-// Admin Pending (占位，供后端扩展实现)
 async function apiListPendingCompanyEdits() { return await apiRequest('/pending/company-edits', { method: 'GET' }); }
 async function apiListPendingJobPosts() { return await apiRequest('/pending/job-posts', { method: 'GET' }); }
 async function apiReviewPending(id, payload) { return await apiRequest(`/pending/${id}/review`, { method: 'POST', body: payload }); }

@@ -8,24 +8,25 @@
 #include "DomainModels.h"
 #include "DTO.h"
 #include <unordered_map>
-#include <string>
 #include <mutex>
-#include "DTO.h"
 #include <chrono>
 #include <sstream>
-#include "IPersistent.h"
 #include <iostream>
+#include <MySQLPersistent.h>
 using string = std::string;
 
-class AppService : public IService, public IPersistent {
+class AppService : public IService {
 
 private:
 	std::unordered_map<std::string, std::string> userPasswords_; // userId -> password
 	std::unordered_map<std::string, std::string> sessionUsers_;  // sessionId -> userId
 	std::mutex mu_;
-
+	std::unique_ptr<IPersistent> persistent;
 
 public:
+	AppService() : persistent(new MySQLPersistent) {
+
+	}
 	std::string MakeSessionId(const std::string& userId) {
 		auto now = std::chrono::steady_clock::now().time_since_epoch().count();
 		std::ostringstream oss;
@@ -68,7 +69,7 @@ public:
 		}
 		userPasswords_[userId] = password;
 		success = true;
-		int id = CreateUser(userId, role);
+		int id = persistent->CreateUser(userId, role);
 		return { std::to_string(id), userId };
 	}
 	UserInfoDTO GetMe(const string& sessionId) override
@@ -80,11 +81,11 @@ public:
 			return {};  // session不存在，返回空结构体
 		}
 		std::string userId = it->second;
-		int id= GetUserIdByUserName(userId);
+		int id= persistent->GetUserIdByUserName(userId);
 		if (id==NULL) {
 			return {}; // 用户在数据库不存在，返回空
 		}
-		UserInfoDTO info = GetUserInfo(id);
+		UserInfoDTO info = persistent->GetUserInfo(id);
 		return info;
 	}
 
@@ -92,7 +93,7 @@ public:
 	virtual JobHunterDTO GetJobHunterInfo(int id)  override
 	{
 		try {
-			return IPersistent::GetJobHunterInfo(id);
+			return persistent->GetJobHunterInfo(id);
 		}
 		catch (const std::exception& e) {
 			//
@@ -103,7 +104,7 @@ public:
 	virtual StatusDTO UpdateHunterInfo(int id, const JobHunter& newInfo) override
 	{
 		try {
-			IPersistent::UpdateHunterInfo(id, newInfo);
+			persistent->UpdateHunterInfo(id, newInfo);
 			return { true };
 		}
 		catch (const std::exception& e) {
@@ -115,7 +116,7 @@ public:
 	virtual std::vector<JobApplicationDTO> GetJobApplicationsByJobHunter(int id)  override
 	{
 		try {
-			IPersistent::GetJobApplicationsByJobHunter(id);
+			persistent->GetJobApplicationsByJobHunter(id);
 		}
 		catch (const std::exception& e) {
 			// 处理异常，返回失败
@@ -126,7 +127,7 @@ public:
 	virtual CompanyDTO GetCompanyById(int id)  override
 	{
 		try {
-			IPersistent::GetCompanyById(id);
+			persistent->GetCompanyById(id);
 		}
 		catch (const std::exception& e) {
 			// 处理异常，返回失败
@@ -136,7 +137,7 @@ public:
 	virtual StatusDTO UpdateCompanyInfo(int id, const Company& newInfo)  override
 	{
 		try {
-			IPersistent::UpdateCompanyInfo(id, newInfo);
+			persistent->UpdateCompanyInfo(id, newInfo);
 			return { true };
 		}
 		catch (const std::exception& e) {
@@ -158,7 +159,7 @@ public:
 	std::vector<JobDTO> SearchJobs(const std::string& keyword, const std::string& location) override
 	{
 		try {
-			std::vector<JobDTO> allJobs = GetAllJobs();
+			std::vector<JobDTO> allJobs = persistent->GetAllJobs();
 
 			std::vector<JobDTO> filtered;
 			for (const auto& job : allJobs) {
@@ -192,7 +193,7 @@ public:
 	virtual int CreateJob(const JobInfo& newJob) override
 	{
 		try {
-			return IPersistent::CreateJob(newJob);
+			return persistent->CreateJob(newJob);
 		}
 		catch (const std::exception& e) {
 			// 处理异常，返回失败
@@ -200,11 +201,11 @@ public:
 		}
 	}
 
-	virtual JobApplicationDTO ApplyForJob(int id) override
+	virtual JobApplicationDTO ApplyForJob(int id, int jobHunterId) override
 	{
 
 		try {
-			return IPersistent::ApplyForJob(id);
+			return persistent->ApplyForJob(id, jobHunterId);
 		}
 		catch (const std::exception& e) {
 			// 处理异常，返回失败
@@ -215,7 +216,7 @@ public:
 	virtual std::vector<JobApplicationDTO> GetJobApplicationsByCompany(int id) override
 	{
 		try {
-			return IPersistent::GetJobApplicationsByCompany(id);
+			return persistent->GetJobApplicationsByCompany(id);
 		}
 		catch (const std::exception& e) {
 			// 处理异常，返回失败
@@ -227,7 +228,7 @@ public:
 	StatusDTO UpdateJobApplicationStatus(int id, const string& status) override
 	{
 		try {
-			IPersistent::UpdateJobApplicationStatus(id,status);
+			persistent->UpdateJobApplicationStatus(id,status);
 			return { true };
 		}
 		catch (const std::exception& e) {
@@ -237,36 +238,40 @@ public:
 	}
 
 
-	virtual std::vector<Company> GetPendingCompaniesEdits() override
+	virtual std::vector<PendingReview> GetPendingCompaniesEdits() override
 	{
 		try {
-			return IPersistent::GetPendingCompaniesEdits();
+			return persistent->GetPendingCompaniesEdits();
 		}
 		catch (const std::exception& e) {
 			// 处理异常，返回失败
 			return {};
 		}
 	}
-	virtual std::vector<JobInfo> GetPendingJobsEdits() override
+	virtual std::vector<PendingReview> GetPendingJobsEdits() override
 	{
 		try {
-			return IPersistent::GetPendingJobsEdits();
+			return persistent->GetPendingJobsEdits();
 		}
 		catch (const std::exception& e) {
 			// 处理异常，返回失败
 			return {};
 		}
 	}
-	virtual StatusDTO CheckPending(const string& type, bool isApproved) override
+	virtual StatusDTO CheckPending(const string& type, bool isApproved, int pendingReviewId) override
 	{
 		try {
-			IPersistent::CheckPending(type, isApproved);
+			persistent->CheckPending(type, isApproved, pendingReviewId);
 			return { true };
 		}
 		catch (const std::exception& e) {
 			// 处理异常，返回失败
-			return { false };;
+			return { false };
 		}
 
 	}
 };
+
+std::unique_ptr<IService> GetServiceImpl() {
+	return std::unique_ptr<IService>(new AppService);
+}

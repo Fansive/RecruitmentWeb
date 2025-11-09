@@ -64,7 +64,7 @@ namespace
 			return 0;
 		}
 
-		JobApplicationDTO ApplyForJob(int id) override
+		JobApplicationDTO ApplyForJob(int id, int jobHunterId) override
 		{
 			return JobApplicationDTO();
 		}
@@ -74,35 +74,49 @@ namespace
 			return std::vector<JobApplicationDTO>();
 		}
 
-		StatusDTO UpdateJobApplicationStatus(int id) override
+		StatusDTO UpdateJobApplicationStatus(int id, const string& status) override
 		{
 			return StatusDTO();
 		}
 
-		std::vector<Company> GetPendingCompaniesEdits() override
+		std::vector<PendingReview> GetPendingCompaniesEdits() override
 		{
-			return std::vector<Company>();
+			return std::vector<PendingReview>();
 		}
 
-		std::vector<JobInfo> GetPendingJobsEdits() override
+		std::vector<PendingReview> GetPendingJobsEdits() override
 		{
-			return std::vector<JobInfo>();
+			return std::vector<PendingReview>();
 		}
 
-		StatusDTO CheckPending(const string& type, bool isApproved) override
+		StatusDTO CheckPending(const string& type, bool isApproved, int pendingReviewId) override
 		{
 			return StatusDTO();
 		}
 
 	};
 }
-HttpHandler HttpHandler::Instance(std::unique_ptr<IService>(new MockService));
+std::unique_ptr<IService> GetServiceImpl();
+HttpHandler HttpHandler::Instance(GetServiceImpl());
 
-void HttpHandler::RegisterRoutingAndRun()
-{
+void HttpHandler::RegisterRoutingAndRun() {
 	server.set_mount_point("/", "./Frontend");
 	server.set_pre_routing_handler(PreRoutingHandler);
 	server.Post("/api/signup", SignupHandler);
 	server.Post("/api/login", LoginHandler);
+	server.Get("/api/me", GetMeHandler);
+	server.Get(R"(/api/jobhunters/(\d+))", GetJobHunterInfoHandler);
+	server.Put(R"(/api/jobhunters/(\d+))", UpdateHunterInfoHandler);
+	server.Get(R"(/api/jobhunters/(\d+)/applications)", GetJobApplicationsByJobHunterHandler);
+	server.Get(R"(/api/companies/(\d+))", GetCompanyByIdHandler);
+	server.Put(R"(/api/companies/(\d+))", UpdateCompanyInfoHandler);
+	server.Get(R"(/api/jobs?keyword=(\d+)&location=(\d+))", SearchJobsHandler);
+	server.Post("/api/jobs", CreateJobHandler);
+	server.Post(R"(/api/jobs/(\d+)/applications)", ApplyForJobHandler);
+	server.Get(R"(/api/companies/(\d+)/applications)", GetJobApplicationsByCompanyHandler);
+	server.Patch(R"(api/applications/(\d+))", UpdateJobApplicationStatusHandler);
+	server.Get("/api/pending/company-edits", GetPendingCompaniesEditsHandler);
+	server.Get("/api/pending/job-posts", GetPendingJobsEditsHandler);
+	server.Get(R"(/api/pending/(\d+)/review)", CheckPendingHandler);
 	server.listen(IP, Port);
 }

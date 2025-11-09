@@ -136,6 +136,7 @@
     <ClCompile Include="HTTP\src\Server.cpp" />
     <ClCompile Include="Infrastructure\src\Logger.cpp" />
     <ClCompile Include="Infrastructure\src\SimpleFileLoader.cpp" />
+    <ClCompile Include="Persistent\src\MySQLPersistent.cpp" />
     <ClCompile Include="Persistent\src\DbConnector.cpp" />
     <ClCompile Include="Service\src\AppService.cpp" />
   </ItemGroup>
@@ -159,6 +160,7 @@
     <ClInclude Include="Infrastructure\include\Logger.h" />
     <ClInclude Include="Infrastructure\include\SimpleFileLoader.h" />
     <ClInclude Include="Persistent\include\DbConnector.h" />
+    <ClInclude Include="Persistent\include\MySQLPersistent.h" />
     <ClInclude Include="Service\include\DomainModels.h" />
     <ClInclude Include="Service\include\IPersistent.h" />
   </ItemGroup>

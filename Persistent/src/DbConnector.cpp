@@ -6,12 +6,14 @@
 
 DbConnector DbConnector::Instance;
 
-bool DbConnector::Connect(const string& host, const string& userName, const string& password, const string& database) {
+bool DbConnector::Connect() {
+    
     try {
+        auto cfg = g_FileLoader.LoadCfg("Others/local_password.txt");
         driver = get_driver_instance();
-        connection.reset(driver->connect(host, userName, password));
-        connection->setSchema(database);
-        Execute("use " + database);
+        connection.reset(driver->connect(cfg.host, cfg.userName, cfg.password));
+        connection->setSchema(cfg.database);
+        Execute("use " + cfg.database);
         return true;
     }
     catch (const sql::SQLException& e) {

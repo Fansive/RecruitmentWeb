@@ -24,15 +24,15 @@ public:
 	//该job的companyId通过sessionId获取,该函数返回值是该job的id
 	virtual int CreateJob(const JobInfo& newJob) = 0;
 	//该id为job的id
-	virtual JobApplicationDTO ApplyForJob(int id) = 0;
+	virtual JobApplicationDTO ApplyForJob(int id, int jobHunterId) = 0;
 	//根据公司id,查询他的岗位申请列表
 	virtual std::vector<JobApplicationDTO> GetJobApplicationsByCompany(int id) = 0;
 	//公司同意/拒绝职位申请后,更新招聘进度,该id为jobApplication的id
-	virtual StatusDTO UpdateJobApplicationStatus(int id,const string &status) = 0;
+	virtual StatusDTO UpdateJobApplicationStatus(int id, const string& status) = 0;
 	//管理员获取公司修改信息的申请列表
-	virtual std::vector<Company> GetPendingCompaniesEdits() = 0;
-	virtual std::vector<JobInfo> GetPendingJobsEdits() = 0;
+	virtual std::vector<PendingReview> GetPendingCompaniesEdits() = 0;
+	virtual std::vector<PendingReview> GetPendingJobsEdits() = 0;
 	//管理员审核请求
-	virtual StatusDTO CheckPending(const string& type, bool isApproved) = 0;
+	virtual StatusDTO CheckPending(const string& type, bool isApproved, int pendingReviewId) = 0;
 
 };

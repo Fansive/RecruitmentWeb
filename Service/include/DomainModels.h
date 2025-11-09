@@ -15,7 +15,6 @@ public:
     std::string role;    // JobHunter, Company, Administrator
     std::string name;    // 统一的名称
     std::string address; // 统一的地址信息
-
     virtual ~UserBase() = default;
 };
 
@@ -29,7 +28,7 @@ public:
     int graduationYear;
     std::string school;
     std::string major;
-    std::string resumeUrl; // 简历文件URL
+    std::string resumeUrl;
 };
 
 // Company Class
@@ -43,12 +42,25 @@ public:
 // Job Posting
 struct JobInfo
 {
-    int id;
+    int id, companyId;
     std::string title, companyName, location, salary, description, degreeRequirement;
 };
 
-
+// Application Record
+struct ApplicationRecord
+{
+    std::string applicationId;
+    std::string jobHunterId;
+    std::string jobId;
+    std::string status;
+};
 
 class Administrator : public UserBase
 {
+};
+
+class PendingReview {
+public:
+    int id;
+    std::string type, companyId, companyName, status, reviewDataJson, createdAt, reviewedAt, reviewedBy;
 };
